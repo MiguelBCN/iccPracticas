@@ -11,8 +11,8 @@ int main(void) {
     double **A, *b, *x;
     int n;
     
-    printf("Dimensión de la matriz A: ");
-    scanf_s("%d", &n);
+    printf("Dimensiï¿½n de la matriz A: ");
+    scanf("%d", &n);
     
     A = (double **) malloc (n * sizeof(double*));
     b = (double *) malloc (n * sizeof(double));
@@ -27,7 +27,7 @@ int main(void) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             printf("A[%d][%d]: ", i, j);
-            scanf_s("%le", &A[i][j]);
+            scanf("%le", &A[i][j]);
         }
     }
     
@@ -35,7 +35,7 @@ int main(void) {
     
     for (int i = 0; i < n; i++) {
         printf("B[%d]: ", i);
-        scanf_s("%le", &b[i]);
+        scanf("%le", &b[i]);
     }
     
     return 0;

@@ -50,6 +50,7 @@ double norma2(int n, double *z) {
     
 }
 
+/*
 int gauss(int n, double **A, double *v, double tol) {
     
     double *t;
@@ -99,3 +100,4 @@ float horner(float z, float a[]){
    
    return sum;
 }
+*/

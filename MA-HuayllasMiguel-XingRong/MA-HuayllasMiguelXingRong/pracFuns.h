@@ -1,29 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/* 
- * File:   pracFuns.h
- * Author: migue
- *
- * Created on 18 de diciembre de 2020, 23:22
- */
 
 #ifndef PRACFUNS_H
 #define PRACFUNS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+//void resTinf (int n, double **L, double *x, double *b);
+void resTS (int n, double **U, double *x, double *b);
+void prodMatVec (int m, int n, double **A, double *x, double *y);
+//void prodMatMat (int m, int n, int p, double **A, double **B, double **C);
+int gauss(int n, double **A, double *v, double tol);
+int gausspivot(int n, double **A, double *v, double tol);
+//gausstri
+float horner(float z, float a[]);
+double spline ( int n , double *x , double *M , double *h ,double *N , double *L , double z );
 
 
-
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif /* PRACFUNS_H */
 

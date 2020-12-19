@@ -2,41 +2,110 @@
 /* COGNOM1: XING COGNOM2 : NOM: RONG DNI / NIUB : */
 
 #include "pracFuns.h"
-
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 
-int main(void) {
-    
-    double **A, *b, *x;
-    int n;
-    
-    printf("Dimensi�n de la matriz A: ");
+int main(void){
+    int n, i, j;
+    double **L, **T, *x, *b, *y, total = 0;
+    // Creacion de matriz
+    printf("Doneu les dimensions de la matriu , (n,n) = \n");
     scanf("%d", &n);
-    
-    A = (double **) malloc (n * sizeof(double*));
-    b = (double *) malloc (n * sizeof(double));
-    x = (double *) malloc (n * sizeof(double));
-    
-    for (int i = 0; i < n; i++) {
-        A[i] = (double*) malloc (n * sizeof(double));
+    L = (double **) malloc( n*sizeof(double *) );
+    T = (double **) malloc( n*sizeof(double *) );
+    if ( L == NULL || T == NULL){
+        printf("No hay suficiente memoria");
+        return 1;
     }
     
-    printf("\nMatriz A\n");
-    
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            printf("A[%d][%d]: ", i, j);
-            scanf("%le", &A[i][j]);
+    for (i = 0; i < n; i++){
+        L[i] = (double *) malloc( n*sizeof(double) );
+        T[i] = (double *) malloc( n*sizeof(double) );
+        if ( L[i] == NULL || T[i] == NULL){
+            printf("No hay suficiente memoria");
+            return 2;
         }
     }
     
-    printf("\nVector b\n");
-    
-    for (int i = 0; i < n; i++) {
-        printf("B[%d]: ", i);
-        scanf("%le", &b[i]);
+    x = (double *) malloc( n*sizeof(double) );
+    b = (double *) malloc( n*sizeof(double) );
+    y = (double *) malloc( n*sizeof(double) );
+    if ( x == NULL || b == NULL || y == NULL){
+        printf("No hay suficiente memoria");
+        return 3;
     }
     
+    // Comprobacion de si es una matriz triangular superior
+    printf("Doneu el (%d x %d) element de la matriu L \n", n, n);
+    for (i = 0; i < n; i++){
+        for (j = 0; j < n; j++){
+            scanf("%le", &L[i][j]);
+        }
+        if (L[i][i] != 1){
+            printf("No te diagonal de 1's");
+            return 4;
+        }
+    }
+    
+    printf("Doneu els %d elements del vector b \n", n);
+    for (i = 0; i < n; i++)
+        scanf("%le", &b[i]);
+
+    //resTinf(n, L, x, b);
+    
+    printf("\n Vector solució x = \n");
+    for (i=0;i<n;i++)
+        printf( "%16.7e ", x[i]);
+
+
+ /* Valor residual */   
+    printf("\n Valor residual ||Lx - b||^2 = \n");
+    prodMatVec (n,n,L,x,y);
+    for (i=0; i <n; i++){
+        y[i] = y[i] - b[i];
+        y[i] = pow(y[i],2);
+        total += y[i];
+    }
+    
+    total = sqrt(total);
+    printf( "%16.7e ", total);
+    
+    
+/* Transposem la matriu L */
+    for (i=0; i<n; i++){
+        for (j=0;j<n;j++){
+            T[j][i] = L[i][j];
+        }
+    }
+    
+    printf("\n Matriu L transposada = \n");
+    for (i = 0; i < n; i++){
+        for (j = 0; j < n; j++){
+            printf(" %16.7e ", T[i][j]);
+        }
+        printf("\n");
+    }
+    
+    resTS(n,T,x,b);
+    
+    printf("\n Vector solució x de la Transposada = \n");
+    for (i=0;i<n;i++){
+        printf( "%16.7e ", x[i]);
+    }
+    printf("\n");
+
+    for (i = 0; i < n; i++)
+        free (L[i]);
+
+    free(L);
+    
+    for (i=0;i<n;i++)
+        free (T[i]);
+    
+    free(T);
+    free(x);
+    free(b);
+    free(y);
     return 0;
 }

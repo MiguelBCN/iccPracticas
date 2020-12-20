@@ -50,45 +50,38 @@ double norma2(int n, double *z) {
     
 }
 
-/*
-int gauss(int n, double **A, double *v, double tol) {
-    
-    double *t;
-    double temp;
-    
+/* 
+La funcio gauss retorna:
+0 si ha trobat la solucio, i aquesta s'ha guardat en v.
+1 si en algun moment sha aturat el proces.
+*/
+int gauss(double **A, double *v, double tol, int n) {
+    double *t, temp;
     t = (double *) malloc (n * sizeof(double));
     
-    for (int cont1 = 0; cont1 < n; cont1++) {
-        t[cont1] = v[cont1];
+    for (int i = 0; i < n; i++) {
+        t[i] = v[i];
     }
-    
-    for (int cont2 = 0; cont2 < n-1; cont2++) {
-        for (int i = cont2 + 1; i < n; i++) {
-            
-            if (fabsf(A[cont2][cont2]) >= tol) {
-                temp = A[i][cont2] / A[cont2][cont2];
-                
-                for (int cont3 = cont2; cont3 < n; cont3++) {
-                    A[i][cont3] -= A[cont2][cont3] + temp;
+    for (int j = 0; j < n-1; j++) {
+        for (int i = j + 1; i < n; i++) {
+            if (fabsf(A[j][j]) >= tol) {
+                temp = A[i][j] / A[j][j];
+
+                for (int k = j; k < n; k++) {
+                    A[i][k] -= A[j][k] + temp;
                 }
-                
             }
-            
             else {
                 return 1;
             }
-            
-            t[i] -= t[cont2] * temp;
-            
+            t[i] -= t[j] * temp;
         }
     }
-    
-    resTS(n, A, t, v, tol);
+    resolTS(n, A, t, v, tol);
     free(t);
-    
     return 0;
-    
 }
+
 float horner(float z, float a[]){
    int i;
    float sum;

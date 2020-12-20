@@ -59,7 +59,7 @@ La funcio gauss retorna:
  */
 
 int gauss(double **A, double *v, double tol, int n) {
-    double *t, c;// t = v luego de ahcer gauss , c valor que los pivotes se resten y den 0
+    double *t, c; // t = v luego de ahcer gauss , c valor que los pivotes se resten y den 0
     t = (double *) malloc(n * sizeof (double));
 
 
@@ -68,18 +68,21 @@ int gauss(double **A, double *v, double tol, int n) {
     }
 
     for (int i = 0; i < n - 1; i++) {
+        if (A[i][i] == 0.0) {
+            printf("La diagonal de la matriz principal tiene 0 trate gauss con pivote\n");
+            return 1;
+        }
         for (int k = i + 1; k < n; k++) {
+            // Calcumos s
             c = A[k][i] / A[i][i];
             for (int j = 0; j < n; j++) {
+                // Calculamos las filas
                 A[k][j] = A[k][j] - c * A[i][j];
             }
+            // Calculamos b con gauss
             t[k] = t[k] - c * t[i];
         }
 
-    }
-
-    for (int z = 0; z < n; z++) {
-        printf("valor t: %f\n", t[z]);
     }
 
     resolTS(n, A, t, v, tol);
@@ -101,13 +104,17 @@ int gausspivot(double **A, double *v, double tol, int n) {
         for (int k = i + 1; k < n; k++) {
             //If diagonal element(absolute vallue) is smaller than any of the terms below it
             if (fabs(A[i][i]) < fabs(A[k][i])) {
-                //Swap the rows
+                //Cambiamos filas
+                double tempb;
                 for (int j = 0; j < n; j++) {
                     double temp;
                     temp = A[i][j];
                     A[i][j] = A[k][j];
                     A[k][j] = temp;
                 }
+                tempb = t[i];
+                t[i] = t[k];
+                t[k] = tempb;
             }
         }
         //Gauss luego de pivote
@@ -116,9 +123,11 @@ int gausspivot(double **A, double *v, double tol, int n) {
             for (int j = 0; j < n; j++) {
                 A[k][j] = A[k][j] - term * A[i][j];
             }
-            t[k] = t[k] - c * t[i];
+            t[k] = t[k] - term * t[i];
         }
     }
+
+    // Calculado Gauss llamamos a resolTS
     for (int z = 0; z < n; z++) {
         printf("valor t: %f\n", t[z]);
     }
@@ -128,16 +137,13 @@ int gausspivot(double **A, double *v, double tol, int n) {
     return 0;
 }
 
-/*
- * 
-float horner(float z, float a[], int g){
-   int i;
-   float sum;
-   sum = a[g];
+float horner(float z, float a[], int g) {
+    int i;
+    float sum;
+    sum = a[g];
 
-   for (i = g-1; i >= 0; i--){
-      sum = sum*z+a[i];
-   }
-   return sum;
+    for (i = g - 1; i >= 0; i--) {
+        sum = sum * z + a[i];
+    }
+    return sum;
 }
- */

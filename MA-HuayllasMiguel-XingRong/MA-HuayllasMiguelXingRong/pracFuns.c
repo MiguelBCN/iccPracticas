@@ -63,15 +63,23 @@ int gauss(double **A, double *v, double tol, int n) {
     t = (double *) malloc(n * sizeof (double));
     x = (double *) malloc(n * sizeof (double));
 
+    for (int cont1 = 0; cont1 < n; cont1++) {
+        t[cont1] = v[cont1];
+    }
+
     for (int i = 0; i < n - 1; i++) {
         for (int k = i + 1; k < n; k++) {
             c = A[k][i] / A[i][i];
             for (int j = 0; j < n; j++) {
                 A[k][j] = A[k][j] - c * A[i][j];
             }
-            t[i] -= t[k] * c;
+            t[k] = t[k] - c * t[i];
         }
-        
+
+    }
+
+    for (int z = 0; z < n; z++) {
+        printf("valor t: %f\n", t[z]);
     }
 
     resolTS(n, A, t, v, tol);
@@ -81,15 +89,14 @@ int gauss(double **A, double *v, double tol, int n) {
 
 /*
  * 
-float horner(float z, float a[]){
+float horner(float z, float a[], int g){
    int i;
    float sum;
-   sum = a[7];
+   sum = a[g];
 
-   for (i = 6; i >= 0; i--){
+   for (i = g-1; i >= 0; i--){
       sum = sum*z+a[i];
    }
-   
    return sum;
 }
  */

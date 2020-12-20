@@ -36,6 +36,15 @@ int main(void){
     }
 
 gauss(A, b, 0.01, n);
+
+printf("\n Matriz A luego de gauss");
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%f ", A[i][j]);
+        }
+        printf("\n ");
+    }
+
 printf("\nSolución del sistema x = ");
 for ( i=0; i < n; i++){
     printf( "%16.7e ", b[i]);

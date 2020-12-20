@@ -82,6 +82,7 @@ int gauss(double **A, double *v, double tol, int n) {
     return 0;
 }
 
+/*
 float horner(float z, float a[]){
    int i;
    float sum;

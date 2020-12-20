@@ -1,10 +1,10 @@
+/* COGNOM1: HUAYLLAS COGNOM2: CHOQUE NOM: MIGUEL VICTOR DNI / NIUB : 17510710 */
+/* COGNOM1: XING COGNOM2 : NOM: RONG DNI / NIUB :  20274962*/
+
 #include "pracFuns.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-
-//resTS, norma2, prodMatVec, gauss, gausspivot,
-//gausstri, horner i spline.
 
 //Funcion para resolver el sistema de ecuaciones Ax = b siendo A una matriz triangular superior,
 // devuelve 0 si ha podido resolver el sistema i 1 en caso contrario.
@@ -69,11 +69,17 @@ int gauss(double **A, double *v, double tol, int n) {
 
     for (int i = 0; i < n - 1; i++) {
         if (A[i][i] == 0.0) {
-            printf("La diagonal de la matriz principal tiene 0 trate gauss con pivote\n");
+            printf("\nLa diagonal de la matriz principal tiene 0 trate gauss con pivote\n");
             return 1;
         }
         for (int k = i + 1; k < n; k++) {
-            // Calcumos s
+            //Comprobamos la tolerancia
+            if (!(fabsf(A[k][i]) >= tol)) {
+                printf("\nEl valor %f no cumple con la tolerancai dada en la pos A[%d][%d]\n", A[k][i], k, i);
+                return (1);
+            }
+
+            // Calcumos el valor que iguala a ambas filas
             c = A[k][i] / A[i][i];
             for (int j = 0; j < n; j++) {
                 // Calculamos las filas
@@ -91,7 +97,7 @@ int gauss(double **A, double *v, double tol, int n) {
 }
 
 int gausspivot(double **A, double *v, double tol, int n) {
-    double *t, temp, c;
+    double *t;
     t = (double *) malloc(n * sizeof (double));
 
 
@@ -102,6 +108,11 @@ int gausspivot(double **A, double *v, double tol, int n) {
     for (int i = 0; i < n - 1; i++) {
         //Pivote parcial
         for (int k = i + 1; k < n; k++) {
+            //Comprobamos la tolerancia
+            if (!(fabsf(A[k][i]) >= tol)) {
+                printf("El valor %f no cumple con la tolerancai dada en la pos A[%d][%d]", A[k][i], k, i);
+                return (1);
+            }
             //If diagonal element(absolute vallue) is smaller than any of the terms below it
             if (fabs(A[i][i]) < fabs(A[k][i])) {
                 //Cambiamos filas
@@ -128,9 +139,6 @@ int gausspivot(double **A, double *v, double tol, int n) {
     }
 
     // Calculado Gauss llamamos a resolTS
-    for (int z = 0; z < n; z++) {
-        printf("valor t: %f\n", t[z]);
-    }
 
     resolTS(n, A, t, v, tol);
     free(t);

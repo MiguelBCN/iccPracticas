@@ -59,9 +59,9 @@ La funcio gauss retorna:
  */
 
 int gauss(double **A, double *v, double tol, int n) {
-    double *t, *x, temp, c;
+    double *t, c;// t = v luego de ahcer gauss , c valor que los pivotes se resten y den 0
     t = (double *) malloc(n * sizeof (double));
-    x = (double *) malloc(n * sizeof (double));
+
 
     for (int cont1 = 0; cont1 < n; cont1++) {
         t[cont1] = v[cont1];
@@ -78,6 +78,47 @@ int gauss(double **A, double *v, double tol, int n) {
 
     }
 
+    for (int z = 0; z < n; z++) {
+        printf("valor t: %f\n", t[z]);
+    }
+
+    resolTS(n, A, t, v, tol);
+    free(t);
+    return 0;
+}
+
+int gausspivot(double **A, double *v, double tol, int n) {
+    double *t, temp, c;
+    t = (double *) malloc(n * sizeof (double));
+
+
+    for (int cont1 = 0; cont1 < n; cont1++) {
+        t[cont1] = v[cont1];
+    }
+
+    for (int i = 0; i < n - 1; i++) {
+        //Pivote parcial
+        for (int k = i + 1; k < n; k++) {
+            //If diagonal element(absolute vallue) is smaller than any of the terms below it
+            if (fabs(A[i][i]) < fabs(A[k][i])) {
+                //Swap the rows
+                for (int j = 0; j < n; j++) {
+                    double temp;
+                    temp = A[i][j];
+                    A[i][j] = A[k][j];
+                    A[k][j] = temp;
+                }
+            }
+        }
+        //Gauss luego de pivote
+        for (int k = i + 1; k < n; k++) {
+            double term = A[k][i] / A[i][i];
+            for (int j = 0; j < n; j++) {
+                A[k][j] = A[k][j] - term * A[i][j];
+            }
+            t[k] = t[k] - c * t[i];
+        }
+    }
     for (int z = 0; z < n; z++) {
         printf("valor t: %f\n", t[z]);
     }

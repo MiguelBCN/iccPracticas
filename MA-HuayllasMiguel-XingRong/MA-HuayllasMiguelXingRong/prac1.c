@@ -10,7 +10,7 @@ int main(void){
     double **A, *b, *x, *z, r;
     int n;
     
-    printf("Introduir el numero de ecuaciones: ");
+    printf("Introducir el numero de ecuaciones: ");
     scanf("%d", &n);
     
     A = (double **) malloc (n * sizeof(double*));
